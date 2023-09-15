@@ -20,9 +20,10 @@ const getTemperaments = async (req, res) => {
         }})
     }
 
-    const allTemps = await Temperament.findAll()    
+    const allTemps = await Temperament.findAll()
+    const onlyTemps = allTemps.map((temp) => temp.name)    
     
-    res.status(200).json(allTemps)
+    res.status(200).json(onlyTemps)
 }
 
 module.exports = getTemperaments

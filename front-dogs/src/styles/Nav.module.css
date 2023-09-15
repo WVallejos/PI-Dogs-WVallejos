@@ -1,0 +1,36 @@
+.nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.headerImg{
+    width: 25vw;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-around;
+    width: 85vw;
+    background-color:rgb(48, 141, 67, 0.4);
+    border-radius: 20px;
+    padding: 0;
+}
+
+.button {
+    background-color: #f96e4d;
+    border: 0;
+    padding: 11px 22px;
+    height: fit-content;
+    border-radius: 50px;
+    color: #fff;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: 900;
+    text-decoration: none;
+    font-family: 'rick-and-morty'
+  }
+
+  .button:hover {
+    background-color: #b04e35;
+  }

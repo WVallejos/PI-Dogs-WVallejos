@@ -3,8 +3,8 @@ const { Dog, Temperament } = require('../db')
 const fillDB = async () => {
     const perro1 =
         {
-            name: 'firu',
-            image: 'asdas',
+            name: 'firulais',
+            image: 'https://soyfotografodeperros.com/wp-content/uploads/2019/10/firulais.jpg',
             height: '23',
             weight: '324',
             life_span: '32'
@@ -12,8 +12,8 @@ const fillDB = async () => {
         }
     const perro2 =
         {
-            name: 'Mona',
-            image: 'asddasas',
+            name: 'ayudante de santa',
+            image: 'https://w7.pngwing.com/pngs/18/711/png-transparent-santa-s-little-helper-santa-claus-snowball-marge-simpson-homer-simpson-santa-claus-thumbnail.png',
             height: '24323',
             weight: '3254',
             life_span: '372'

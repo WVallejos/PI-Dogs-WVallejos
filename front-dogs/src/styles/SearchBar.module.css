@@ -1,0 +1,30 @@
+.searchBar {
+    display: flex;
+    justify-content: center;
+  }
+ 
+  .input {
+    margin: 5px;
+    width: 10vw;
+    border-radius: 20px;
+    border-color: black;
+    border-width: 3px;
+  }
+
+  .button {
+    background-color: #f96e4d;
+    border: 0;
+    padding: 11px 22px;
+    height: fit-content;
+    border-radius: 50px;
+    color: #fff;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: 900;
+    text-decoration: none;
+    font-family: 'rick-and-morty'
+  }
+
+  .button:hover {
+    background-color: #b04e35;
+  }

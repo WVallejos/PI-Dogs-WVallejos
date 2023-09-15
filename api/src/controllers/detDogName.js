@@ -8,7 +8,6 @@ const getDogName = async (name) => {
     try {
         const { data } = await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}&api_key=${API_KEY}`)
         if (data.length) {
-            console.log(data);
             const dog = await formatDog(data)
             return dog[0]
         } else {
@@ -16,7 +15,7 @@ const getDogName = async (name) => {
             let dogsName = await dogsDb.filter((el) =>
       el.name.toLowerCase().includes(name.toLowerCase())
     );
-    return dogsName[0]
+    return dogsName
         }
     } catch (error) {
         console.log(error);
