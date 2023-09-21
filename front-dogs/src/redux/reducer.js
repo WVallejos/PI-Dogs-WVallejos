@@ -1,9 +1,12 @@
-import { FILTER_TEMP, GET_DOGS, GET_DOGSAPI, GET_DOGSDB, GET_DOG_NAME, GET_TEMPERAMENTS, RESET } from "./action-types";
+import { ADD_DOG, FILTER_SOURCE, FILTER_TEMP, GET_DOGS, GET_DOGSAPI, GET_DOGSDB, GET_DOG_ID, GET_DOG_NAME, GET_TEMPERAMENTS, ORDER_NAME, ORDER_WEIGHT, RESET } from "./action-types";
 
 const initialState = {
     dogs: [],
     allDogs: [],
-    temperaments: []
+    temperaments: [],
+    filteredSource: [],
+    dogDetail: {},
+    filteredTemp: [],
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -12,24 +15,77 @@ const rootReducer = (state = initialState, action) => {
         case GET_DOGS:
                 return { ...state, dogs: action.payload, allDogs: action.payload}
     
-        case GET_DOGSDB:
-                return { ...state, dogs: action.payload}
-        
-        case GET_DOGSAPI:
-                return { ...state, dogs: action.payload}
+        case FILTER_SOURCE:
+            if (state.filteredTemp.length > 0) {
+                
+                if (action.payload === 'api'){
+                    state.filteredSource = state.allDogs.filter((d) => !d.db)
+                    return { ...state, dogs: state.filteredTemp.filter((d) => !d.db)}
+                } else if (action.payload === 'database') {
+                    state.filteredSource = state.allDogs.filter((d) => d.db)
+                    return { ...state, dogs: state.filteredTemp.filter((d) => d.db)}
+                }   else {
+                    return {...state, dogs: [...state.filteredTemp], filteredSource: []}
+                }
+            }  else {
+                if (action.payload === 'api'){
+                    state.filteredSource = state.allDogs.filter((d) => !d.db)
+                    return { ...state, dogs: state.filteredSource}
+                } else if (action.payload === 'database') {
+                    state.filteredSource = state.allDogs.filter((d) => d.db)
+                    return { ...state, dogs: state.filteredSource}
+                }   else {
+                    return {...state, dogs: [...state.allDogs], filteredSource: []}
+                }
+
+            }
+
+
         
         case GET_DOG_NAME:
+            console.log('llegue al reducer');
             return { ...state, dogs: action.payload}
         
         case GET_TEMPERAMENTS:
             return { ...state, temperaments: action.payload}
 
         case FILTER_TEMP:
-            console.log(action.payload);
-            return { ...state, dogs: state.allDogs.filter((d) => d.temperament && d.temperament.includes(action.payload)) }
+            state.filteredTemp = state.allDogs.filter((d) => d.temperament && d.temperament.includes(action.payload))
+            if (state.filteredSource.length > 0) {
+                return { ...state, dogs: state.filteredSource.filter((d) => d.temperament && d.temperament.includes(action.payload))}
+            } else {
+                return { ...state, dogs: [...state.filteredTemp] }
+            }
+        case ORDER_NAME:
+            let orderNameFunction =
+                action.payload === 'ASC'
+                    ? (a, b) => { return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1 } //ASC
+                    : (a, b) => { return a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1 } //DESC
+            return {
+                ...state,
+                dogs: [...state.dogs.sort(orderNameFunction)]   
+                }
 
+        case ORDER_WEIGHT:
+            let orderWeightFunction =
+                action.payload === 'ASC'
+                    ? (a, b) => { return parseFloat(a.weight.split('-')[0]) > parseFloat(b.weight.split('-')[0]) ? 1 : -1 } //ASC
+                    : (a, b) => { return parseFloat(a.weight.split('-')[0]) < parseFloat(b.weight.split('-')[0]) ? 1 : -1 } //DESC
+            return {
+                ...state,
+                dogs: [...state.dogs.sort(orderWeightFunction)]   
+                }
+
+        case GET_DOG_ID:
+            return {
+                ...state, dogDetail: action.payload
+            }
+        
         case RESET:
-            return { ...state, dogs: [...state.allDogs]}
+            return { ...state, dogs: [...state.allDogs], dogsSource: [], filtered: []}
+
+        case ADD_DOG:
+            return {...state}
     
         default:
             return {...state}
@@ -38,21 +94,3 @@ const rootReducer = (state = initialState, action) => {
 
 export default rootReducer
 
-// const dispatch = useDispatch()
-//     const allDogs = useSelector((state) => state.allDogs)
-//     const dogsDB = useSelector((state) => state.dogsDB)
-//     const [dogs, setDogs] = useState([])
-
-//     const handleDB = () => {
-//         dispatch(getDogsDB)
-//         console.log('entre a handledb');
-//         setDogs((dogsDB)=>[...dogsDB])
-//         console.log(dogs);
-
-//     }
-    
-//     useEffect(() => {
-//         dispatch(getAllDogs())
-//         setDogs(allDogs)
-//         console.log(allDogs);
-//     }, [dispatch])

@@ -1,30 +1,31 @@
 .searchBar {
     display: flex;
     justify-content: center;
+    align-items: center;
   }
  
   .input {
     margin: 5px;
-    width: 10vw;
+    height: 30px;
+    width: 15vw;
     border-radius: 20px;
-    border-color: black;
-    border-width: 3px;
+    border: none;
   }
 
   .button {
-    background-color: #f96e4d;
     border: 0;
-    padding: 11px 22px;
+    padding: 8px 12px;
     height: fit-content;
     border-radius: 50px;
-    color: #fff;
+    color: #ba805d;
     margin: 5px;
     cursor: pointer;
     font-weight: 900;
     text-decoration: none;
-    font-family: 'rick-and-morty'
-  }
+    font-family: 'dogs-font';
+    font-size: larger;
+}
 
-  .button:hover {
-    background-color: #b04e35;
+.button:hover {
+    background-color: #eec490;
   }

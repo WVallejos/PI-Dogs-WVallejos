@@ -1,52 +1,33 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDogs } from "../redux/action-creators";
-import Card from "./Cards";
-import Nav from "./Nav";
-import "../styles/Cards.css";
+import Cards from "./Cards";
+
 
 
 
 
 
 function Home() {
-    const dispatch = useDispatch();
-    const allDogs = useSelector((state) => state.dogs)
-    const [shownDogs, setShownDogs] = useState(allDogs)
-    
-
+  const dispatch = useDispatch();
+  const allDogs = useSelector((state) => state.allDogs);
+  
   useEffect(() => {
-    dispatch(getAllDogs());
+    !allDogs.length&&dispatch(getAllDogs());
     console.log('cambio dispatch');
-  }, [dispatch]);
+  }, []);
 
-  useEffect(() => {
-    console.log('cambio allDogs');
-    setShownDogs(allDogs);
-  }, [allDogs]);
+  // useEffect(() => {
+  //   setCurrentPage(1)
+  //   console.log('cambio allDogs');
+  //   console.log(currentPage);
+  // }, [allDogs]);
 
-    return ( <>
-    
-    <h1> HOLA !</h1>
-    <Nav 
-      onSearch={(name) => onSearch(name)} />
-    <div className="cardContainer">
-        {shownDogs.map((el) => (
-    <Card 
-     id={el.id}
-     key={el.id}
-     image={el.image}
-     name={el.name}
-     life_span={el.life_span}
-     temperament={el.temperament}
-     weight={el.weight} 
-     height={el.height}
-    />
-   ))}
- </div>
-    
+  return (
+    <>
+    <Cards/>
     </>
-    )
+  )
 }
 
 export default Home;

@@ -1,0 +1,32 @@
+.landingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    background-image: url(https://img.freepik.com/free-vector/cute-pets-illustration_53876-112522.jpg?w=1380&t=st=1695065891~exp=1695066491~hmac=23b55d6788fc64dca669eeee9f69d2a7a6df89d30b7552f3d32d5a3945ece1cc);
+    background-size: cover;
+    font-family: dogs-font;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+}
+
+.home {
+    border: 0;
+    padding: 8px 12px;
+    height: fit-content;
+    border-radius: 50px;
+    color: #ba805d;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: 900;
+    text-decoration: none;
+    font-family: 'dogs-font';
+    font-size: larger;
+}
+
+.home:hover {
+    background-color: #fad9ab;
+    
+}

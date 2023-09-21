@@ -1,93 +1,145 @@
 import { useEffect, useState } from "react";
-import { filterTemperaments, getDogsApi, getDogsDB, getTemperaments, reset } from "../redux/action-creators";
+import { filterSource, filterTemperaments, getTemperaments, orderName, orderWeight, reset } from "../redux/action-creators";
 import { useDispatch, useSelector } from "react-redux";
-import '../styles/Filters.module.css'
+import '../styles/Filters.css'
 
 
 
 
-function Filters () {
+function Filters() {
 
-    const temperaments = useSelector((state) => state.temperaments);
+    const temperaments = useSelector((state) => (state.temperaments).sort((a, b) => { return a.toLowerCase() > b.toLowerCase() ? 1 : -1 }));
     const dispatch = useDispatch();
-    const [ selected, setSelected ] = useState(false)
-    const [ source, setSource ] = useState(false)
-    const [selectedSource, SetSelectedSource] = useState('')
-    const [selectedTemp, SetSelectedTemp] = useState('')
-    const [filtertype, setFilterType] = useState('')
+    const [selected, setSelected] = useState(false) // local state to show or not show temperaments dropdown
+    const [source, setSource] = useState(false) // local state to shot or not show source dropdown
+    const [order, setOrder] = useState(false) // local state to show or not show order dropdown
+    const [selectedSource, setSelectedSource] = useState('') // keeps track of selected source
+    const [selectedTemp, setSelectedTemp] = useState('') // keeps track of selected temperament
+    const [selectedOrder, setSelectedOrder] = useState('')
+    const [filtertype, setFilterType] = useState('') // keeps track of selected filter type (Temp or source)
+    const [orderType, setOrderType] = useState('') // keeps track of selected filter type (ASC or DESC)
 
     useEffect(() => {
-        console.log('filter renderizo');
         dispatch(getTemperaments())
-    }, [dispatch])
+    }, [])
 
-    const handleChange = (evento) => {
-        setFilterType(evento.target.value)
-        if (evento.target.value === 'temperaments') {
-            setSelected(true)
-            setSource(false)
-            SetSelectedSource('')
-        } else if (evento.target.value === 'source') {
-            setSelected(false)
-            setSource(true)
-            SetSelectedTemp('')
-        } else {
-            setSelected(false)
-            setSource(false)
-        }
-     }
+    // const handleChange = (evento) => {
+    //     setFilterType(evento.target.value)
+    //     if (evento.target.value === 'temperaments') {
+    //         setSelected(true)
+    //         setSource(false)
+    //         setSelectedSource('')
+    //     } else if (evento.target.value === 'source') {
+    //         setSelected(false)
+    //         setSource(true)
+    //         setSelectedTemp('')
+    //     } else {
+    //         setSelected(false)
+    //         setSource(false)
+    //     }
+    // }
 
     const handleSource = (evento) => {
-        SetSelectedSource(evento.target.value)
-        if (evento.target.value === 'api') dispatch(getDogsApi())
-        if (evento.target.value === 'database') dispatch(getDogsDB())
-
+        setSelectedSource(evento.target.value)
+        dispatch(filterSource(evento.target.value))
+        
     }
 
+
     const handleTemperament = (evento) => {
-        SetSelectedTemp(evento.target.value);
+        setSelectedTemp(evento.target.value);
         dispatch(filterTemperaments(evento.target.value))
+    }
+
+    const handleChangeOrder = (evento) => {
+        setOrderType(evento.target.value)
+        setSelectedOrder('')
+        if (evento.target.value === 'name') {
+            dispatch(orderName('ASC'))
+            setOrder(true)
+        }
+        if (evento.target.value === 'weight') {
+            dispatch(orderWeight('ASC'))
+            setOrder(true)
+        }
+        if (evento.target.value === '') {
+            setOrderType('')
+            setOrder(false)
+        }
+    }
+
+    const handleOrder = (evento) => {
+        setSelectedOrder(evento.target.value)
+        if (orderType === 'name') {
+            if (evento.target.value === 'ASC') {
+                dispatch(orderName('ASC'))
+            } else if (evento.target.value === 'DESC') {
+                dispatch(orderName('DESC'))
+            }
+        }
+        else if (orderType === 'weight') {
+            if (evento.target.value === 'ASC') {
+                dispatch(orderWeight('ASC'))
+            } else if (evento.target.value === 'DESC') {
+                dispatch(orderWeight('DESC'))
+            }
+        }
     }
 
     const handleReset = () => {
         setSelected(false)
         setSource(false)
+        setOrder(false)
+        setSelectedTemp('')
         setFilterType('')
+        setOrderType('')
+        setSelectedSource('')
         dispatch(reset())
-      }
-    
+    }
 
 
-    return(
-        <div>
-            <label htmlFor="selector">Filter by:</label>
-      <select value={filtertype} id="selector" onChange={handleChange}>
-        <option value="">Select...</option>
-        <option value="temperaments">Temperaments</option>
-        <option value="source">Source</option>
-      </select>
 
-      {selected&&<div id="temperamentsDropdown" >
-        <label htmlFor="temperament">Select temperament:</label>
-        <select value={selectedTemp} id="temperament" onChange={handleTemperament}>
-            <option value="">Select...</option>
-          {temperaments.map((temperament, index) => (
-            <option key={index} value={temperament}>
-              {temperament}
-            </option>
-          ))}
-        </select>
-      </div>}
+    return (
+        <div className='filters'>
+            <div className='filterType'>
+                <div id="temperamentsDropdown" >
+                    <select value={selectedTemp} className="selector" onChange={handleTemperament}>
+                        <option value="">Filter by Temperament...</option>
+                        {temperaments.map((temperament, index) => (
+                            <option key={index} value={temperament}>
+                                {temperament}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-      {source && <div id="sourceDropdown" className="conditional-dropdown">
-        <label htmlFor="source">Select source:</label>
-        <select value={selectedSource} id="source" onChange={handleSource}>
-        <option value="">Select...</option>
-          <option value="api">API</option>
-          <option value="database">DATABASE</option>
-        </select>
-      </div>}
-      <span onClick={handleReset}>RESET</span>
+                <div id="sourceDropdown">
+                    <select value={selectedSource} className="selector" onChange={handleSource}>
+                        <option value="">Filter by Source...</option>
+                        <option value="api">API</option>
+                        <option value="database">DATABASE</option>
+                    </select>
+                </div>
+            </div>
+            <div className='orderType'>
+                <select value={orderType} className="selector" onChange={handleChangeOrder}>
+                    <option value="">Order By...</option>
+                    <option value="name">Name</option>
+                    <option value="weight">Weight</option>
+                </select>
+
+                {order && <div id="orderDropdown">
+                    <select value={selectedOrder} className="selector" onChange={handleOrder}>
+                        <option value="">Order...</option>
+                        <option value="ASC">ASC</option>
+                        <option value="DESC">DESC</option>
+                    </select>
+                </div>}
+            </div>
+            <div>
+            <span className="button" onClick={handleReset}>RESET</span>
+            </div>
+
         </div>
     )
 }

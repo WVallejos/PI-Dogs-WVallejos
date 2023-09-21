@@ -1,0 +1,29 @@
+.pagination {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    width: 200px;
+    margin: 10px auto; /* Centers vertically */
+    list-style: none;
+  }
+
+  .page-item {
+    margin-right: 10px; 
+    padding: 5px 10px;
+    background: linear-gradient(to bottom, #fad9ab, #eec490);
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  .page-item button{
+    margin-bottom: 5px;
+    border: none;
+    background: #ff4d8f00;
+    color: #ba805d;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .page-item.active{
+    background: #d4a276;
+  }

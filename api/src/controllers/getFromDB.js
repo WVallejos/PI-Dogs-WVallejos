@@ -18,7 +18,8 @@ const getFromDB = async () => {
         let formattedDogs = dogsDb.map((dog) => {
             return {
                 ...dog,
-                temperament: dog.temperament.map((temp) => temp.name).join(', ')
+                temperament: dog.temperament.map((temp) => temp.name).join(', '),
+                db: true
             }
         })
 

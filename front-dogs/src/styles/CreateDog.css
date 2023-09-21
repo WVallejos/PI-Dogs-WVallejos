@@ -1,0 +1,79 @@
+.bodyContainer {
+    margin: 0;
+    background-image: url(https://img.freepik.com/free-vector/frame-with-dogs-vector-white-background_53876-127700.jpg?w=1060&t=st=1695065119~exp=1695065719~hmac=03b80e6292e612755f72599f8417c3523d13e73875e1d95e971dfe394167f214);    
+    background-size: cover;
+    background-attachment: fixed;
+    background-position:  center;
+    font-family: dogs-font;
+    min-width: 100vw;
+    min-height: 100vh;
+    text-align: center;
+  }
+
+  .wrapper {
+    border: 2px solid #eec490;
+    background: rgb(217, 219, 225, 0.5);
+    border-radius: 15px;
+    margin: 50px;
+    display:flex;
+    justify-content: space-evenly;
+    width: 75%;
+  
+}
+
+.formContainer form {
+  display: flex;
+  flex-direction: column;
+  width: 23vw;
+}
+
+.imgContainer {
+  margin: 20px;
+  border-radius: 20px;
+ border: 2px solid rgb(15, 18, 4);
+ height: 40vh;
+ width: 30vw;
+  /* object-fit: contain; */
+}
+
+.singleInput {
+  margin: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doubleInput {
+  border-style: dashed;
+  border-width: 1px;
+  margin: 5px;
+}
+
+.temperamentInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.newTemperaments {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.divTemp {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 5px;
+  background: linear-gradient(to bottom, #fad9ab, #eec490);
+  border-radius: 10px;
+}
+
+.divTemp button{
+  margin: 3px;
+
+}
+
+.divTemp p {
+  margin: 2px;
+  padding: 5px;
+}

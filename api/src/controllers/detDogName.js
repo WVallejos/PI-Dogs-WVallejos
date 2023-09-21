@@ -9,7 +9,7 @@ const getDogName = async (name) => {
         const { data } = await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}&api_key=${API_KEY}`)
         if (data.length) {
             const dog = await formatDog(data)
-            return dog[0]
+            return dog
         } else {
             const dogsDb = await getFromDB()
             let dogsName = await dogsDb.filter((el) =>
@@ -23,4 +23,4 @@ const getDogName = async (name) => {
     }
 }
 
-module.exports = {getDogName}
+module.exports = {getDogName} 
