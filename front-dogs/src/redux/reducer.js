@@ -7,6 +7,11 @@ const initialState = {
     filteredSource: [],
     dogDetail: {},
     filteredTemp: [],
+    filterByTemp: '',
+    filterBySource: '',
+    orderBy: '',
+    order: '',
+    showOrder: false,
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -16,6 +21,7 @@ const rootReducer = (state = initialState, action) => {
                 return { ...state, dogs: action.payload, allDogs: action.payload}
     
         case FILTER_SOURCE:
+            state.filterBySource = action.payload
             if (state.filteredTemp.length > 0) {
                 
                 if (action.payload === 'api'){
@@ -39,17 +45,14 @@ const rootReducer = (state = initialState, action) => {
                 }
 
             }
-
-
-        
         case GET_DOG_NAME:
-            console.log('llegue al reducer');
             return { ...state, dogs: action.payload}
         
         case GET_TEMPERAMENTS:
             return { ...state, temperaments: action.payload}
 
         case FILTER_TEMP:
+            state.filterByTemp = action.payload
             state.filteredTemp = state.allDogs.filter((d) => d.temperament && d.temperament.includes(action.payload))
             if (state.filteredSource.length > 0) {
                 return { ...state, dogs: state.filteredSource.filter((d) => d.temperament && d.temperament.includes(action.payload))}
@@ -57,6 +60,9 @@ const rootReducer = (state = initialState, action) => {
                 return { ...state, dogs: [...state.filteredTemp] }
             }
         case ORDER_NAME:
+            state.orderBy = 'name'
+            state.showOrder = true
+            state.order = action.payload
             let orderNameFunction =
                 action.payload === 'ASC'
                     ? (a, b) => { return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1 } //ASC
@@ -67,6 +73,9 @@ const rootReducer = (state = initialState, action) => {
                 }
 
         case ORDER_WEIGHT:
+            state.orderBy = 'weight'
+            state.showOrder = true
+            state.order = action.payload
             let orderWeightFunction =
                 action.payload === 'ASC'
                     ? (a, b) => { return parseFloat(a.weight.split('-')[0]) > parseFloat(b.weight.split('-')[0]) ? 1 : -1 } //ASC
@@ -82,7 +91,19 @@ const rootReducer = (state = initialState, action) => {
             }
         
         case RESET:
-            return { ...state, dogs: [...state.allDogs], dogsSource: [], filtered: []}
+            return {
+                dogs: [],
+                allDogs: [],
+                temperaments: [],
+                filteredSource: [],
+                dogDetail: {},
+                filteredTemp: [],
+                filterByTemp: '',
+                filterBySource: '',
+                orderBy: '',
+                order: '',
+                showOrder: false,
+            }
 
         case ADD_DOG:
             return {...state}

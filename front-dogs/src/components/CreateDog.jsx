@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addDog, getTemperaments } from "../redux/action-creators";
-import { NavLink } from "react-router-dom";
+import { addDog, getAllDogs, getTemperaments } from "../redux/action-creators";
+import { validate, validateInputs, validateSubmit } from "../validations";
 import '../styles/CreateDog.css'
 
 
@@ -9,6 +9,7 @@ import '../styles/CreateDog.css'
 function CreateDog() {
 
     const temperaments = useSelector((state) => (state.temperaments).sort((a, b) => { return a.toLowerCase() > b.toLowerCase() ? 1 : -1 }))
+    const alldogs = useSelector((state) => state.allDogs)
     const dispatch = useDispatch()
     const [input, setInput] = useState({
         name: "",
@@ -25,16 +26,14 @@ function CreateDog() {
     const [newTemperament, setNewTemperament] = useState('')
 
     useEffect(() => {
-        console.log('cambio el dispatch');
+        dispatch(getAllDogs())
         dispatch(getTemperaments())
-        console.log(temperaments);
     }, [dispatch])
 
 
-
     const handleChange = (event) => {
-        console.log('hola');
-        console.log(temperaments);
+
+        console.log(alldogs);
         const { name, value } = event.target
         if (name === 'name') {
             const newValue = value.charAt(0).toUpperCase() + value.slice(1);
@@ -42,9 +41,10 @@ function CreateDog() {
         } else {
             setInput({ ...input, [name]: value })
         }
+        setErrors(validate(event.target, errors))
     }
+
     const handleTemperamentChange = (event) => {
-        console.log('hola2');
         const selectedOptions = Array.from(
             event.target.selectedOptions,
             (option) => option.value
@@ -69,7 +69,9 @@ function CreateDog() {
 
     const handleAddTemperament = () => {
         if (newTemperament) {
+            if(temperaments.includes(newTemperament)) return setErrors({...errors, temperament: 'This temperament is already on the list, please select it from there or create a new one'})
             if (!input.temperament.includes(newTemperament)) {
+                setErrors({})
                 setInput({
                     ...input,
                     temperament: [...input.temperament, newTemperament],
@@ -81,6 +83,16 @@ function CreateDog() {
 
     const handleSubmit = (evento) => {
         evento.preventDefault()
+        const inputerrors = validateInputs(input)
+        setErrors(inputerrors)
+        if(Object.keys(inputerrors).length > 0) {
+            return
+        }
+        if ((alldogs.filter((d) => d.name === input.name)).length > 0) {
+            return setErrors({...errors, repeat: 'The dog you are trying to create already exists'})
+        }
+        return 
+
         const finalInput = {
             name: input.name,
             height: `${input.minHeight} - ${input.maxHeight}`,
@@ -125,8 +137,8 @@ function CreateDog() {
                                     placeholder="Name..."
                                     onChange={handleChange}
                                 />
-                                {/* aca va el error */}
                             </div>
+                            {errors.name && <small className="error" >{errors.name}</small>}
                             <div className="singleInput">
                                 <label>Image: </label>
                                 <input
@@ -135,8 +147,8 @@ function CreateDog() {
                                     name="image"
                                     onChange={handleChange}
                                 />
-                                {/* aca va el error */}
                             </div>
+                            {errors.image && <small className="error" >{errors.image}</small>}
                             <div className="doubleInput">
                             <div className="singleInput">
                                 <label>Min Weight: </label>
@@ -147,6 +159,7 @@ function CreateDog() {
                                     onChange={handleChange}
                                 />
                             </div>
+                            {errors.minWeight && <small className="error" >{errors.minWeight}</small>}
                             <div className="singleInput">
                                 <label>Max Weight: </label>
                                 <input
@@ -157,6 +170,8 @@ function CreateDog() {
                                 />
 
                             </div>
+                            {errors.maxWeight && <small className="error" >{errors.maxWeight}</small>}
+                            {errors.weight && <small className="error" >{errors.weight}</small>}
                             </div>
                             <div className="doubleInput">
                             <div className="singleInput">
@@ -168,6 +183,7 @@ function CreateDog() {
                                     onChange={handleChange}
                                 />
                             </div>
+                            {errors.minHeight && <small className="error" >{errors.minHeight}</small>}
                             <div className="singleInput">
 
                                 <label>Max Height: </label>
@@ -176,8 +192,10 @@ function CreateDog() {
                                     value={input.maxHeight}
                                     name="maxHeight"
                                     onChange={handleChange}
-                                />
+                                    />
                             </div>
+                            {errors.maxHeight && <small className="error" >{errors.maxHeight}</small>}
+                            {errors.height && <small className="error" >{errors.height}</small>}
                             </div>
                             <div className="doubleInput">
                             <div className="singleInput">
@@ -189,6 +207,7 @@ function CreateDog() {
                                     onChange={handleChange}
                                 />
                                 </div>
+                                {errors.minLife_span && <small className="error" >{errors.minLife_span}</small>}
                                 <div className="singleInput">
 
                                 <label>Max Life Span: </label>
@@ -199,6 +218,8 @@ function CreateDog() {
                                     onChange={handleChange}
                                 />
                                 </div>
+                                {errors.maxLife_span && <small className="error" >{errors.maxLife_span}</small>}
+                                {errors.life_span && <small className="error" >{errors.life_span}</small>}
                             </div>
                             <div className="temperamentInput">
                             <label>Temperaments: </label>
@@ -234,9 +255,11 @@ function CreateDog() {
                                     Add new temperament
                                 </button>
                             </div>
-                            <button className="button" type="submit">
+                            {errors.temperament && <small className="error" >{errors.temperament}</small>}
+                            <button className={validateSubmit(input, errors) ? "disabled" : "button"} type="submit" disabled={validateSubmit(input, errors)}>
                                 Create
                             </button>
+                            {errors.repeat && <small className="error" >{errors.repeat}</small>}
                         </form>
 
                 </div>
