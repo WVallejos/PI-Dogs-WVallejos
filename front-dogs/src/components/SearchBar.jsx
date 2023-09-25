@@ -16,12 +16,14 @@ export default function SearchBar() {
    const handleKeypress = (event) => {
       //it triggers by pressing the enter key
       if (event.keyCode === 13) {
+         if (name.trim() === '') alert('Name should be a non empty string')
          dispatch(getDogName(name.trim()))
          setName('')
       }
    };
 
    function onSearch(name) {
+      if (name.trim() === '') alert('Name should be a non empty string')
       dispatch(getDogName(name.trim()))
       setName('')
    }

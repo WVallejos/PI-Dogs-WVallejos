@@ -1,5 +1,5 @@
-export function validate(input) {
-  let errors = {}
+export function validate(input, errors) {
+  errors = {...errors, height: '', weight: '', life_span: ''}
   const {name, value} = input
   const urlRegex = /^(https?:\/\/)?(www\.)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/;
   const letterRegex = /^[A-Za-z]+$/
@@ -8,8 +8,7 @@ export function validate(input) {
   switch (name) {
 
     case 'name':
-      if (value.trim().length === 0) errors = {...errors, name: `This field is mandatory`}
-      else if (!letterRegex.test(value)) errors = {...errors, name: 'Name should be only letters'}
+      letterRegex.test(value) ? errors = {...errors, name: ''} : errors = {...errors, name: 'Name is mandatory and should be only letters'}
       break;
     case 'minWeight':      
     case 'maxWeight':
@@ -17,12 +16,11 @@ export function validate(input) {
     case 'maxHeight':
     case 'minLife_span':
     case 'maxLife_span':
-      if (value.trim().length === 0) errors = {...errors, [name]: `This field is mandatory`}
-      else if (!numberRegex.test(value)) errors = {...errors, [name]: `${name} should be only numbers`}
+      numberRegex.test(value) ? errors = {...errors, [name]: ''} : errors = {...errors, [name]: `${name} is mandatory and should be only positive numbers`}
       break;
 
     case 'image':
-      if (!urlRegex.test(value)) errors = {...errors, image: 'Image should be a valid URL'}
+      urlRegex.test(value) ? errors = {...errors, image: ''} : errors = {...errors, image: 'Image should be a valid URL'}
       break;
       
     default:
@@ -33,8 +31,9 @@ export function validate(input) {
 }
 
 export function validateSubmit(allInputs, errors) {
+  const allPropertiesEmpty = Object.values(errors).every((value) => value === "");
   if (
-    Object.keys(errors).length === 0 &&
+    allPropertiesEmpty &&
     allInputs.name &&
     allInputs.image &&
     allInputs.minHeight &&
@@ -42,7 +41,8 @@ export function validateSubmit(allInputs, errors) {
     allInputs.minWeight &&
     allInputs.maxWeight &&
     allInputs.minLife_span &&
-    allInputs.maxLife_span
+    allInputs.maxLife_span &&
+    allInputs.temperament.length > 0
   ) return false
   return true
 }

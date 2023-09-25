@@ -1,5 +1,5 @@
 const { getDogs } = require('../controllers/getDogs')
-const {getDogName} = require('../controllers/detDogName')
+const {getDogName} = require('../controllers/getDogName')
 
 const getAllDogs = async (req, res) => {
     try {

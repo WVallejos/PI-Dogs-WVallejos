@@ -8,6 +8,8 @@ function Nav() {
     const location = useLocation()
     const isHome = location.pathname === '/home'
     const isForm = location.pathname === '/addDog'
+
+    
     return (
         <nav className={styles.nav}>
             <h1 className={styles.welcome}>WELCOME !</h1>

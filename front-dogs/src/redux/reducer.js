@@ -1,17 +1,18 @@
-import { ADD_DOG, FILTER_SOURCE, FILTER_TEMP, GET_DOGS, GET_DOGSAPI, GET_DOGSDB, GET_DOG_ID, GET_DOG_NAME, GET_TEMPERAMENTS, ORDER_NAME, ORDER_WEIGHT, RESET } from "./action-types";
+import { ADD_DOG, CHANGE_PAGE, CLEAR_DETAIL, FILTER_SOURCE, FILTER_TEMP, GET_DOGS, GET_DOG_ID, GET_DOG_NAME, GET_TEMPERAMENTS, ORDER_NAME, ORDER_WEIGHT, RESET } from "./action-types";
 
 const initialState = {
     dogs: [],
     allDogs: [],
     temperaments: [],
     filteredSource: [],
-    dogDetail: {},
     filteredTemp: [],
+    dogDetail: {},
     filterByTemp: '',
     filterBySource: '',
     orderBy: '',
     order: '',
     showOrder: false,
+    currentPage: 1,
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -22,6 +23,7 @@ const rootReducer = (state = initialState, action) => {
     
         case FILTER_SOURCE:
             state.filterBySource = action.payload
+            state.currentPage = 1
             if (state.filteredTemp.length > 0) {
                 
                 if (action.payload === 'api'){
@@ -46,13 +48,16 @@ const rootReducer = (state = initialState, action) => {
 
             }
         case GET_DOG_NAME:
-            return { ...state, dogs: action.payload}
+            return { ...state, dogs: action.payload, allDogs: action.payload, currentPage: 1, filteredSource: [],
+                filteredTemp: [], filterByTemp: '', filterBySource: '', orderBy: '', order: '',}
         
         case GET_TEMPERAMENTS:
             return { ...state, temperaments: action.payload}
 
         case FILTER_TEMP:
-            state.filterByTemp = action.payload
+            console.log(state.allDogs);
+            state.currentPage = 1 
+            state.filterByTemp = action.payload // change the select value
             state.filteredTemp = state.allDogs.filter((d) => d.temperament && d.temperament.includes(action.payload))
             if (state.filteredSource.length > 0) {
                 return { ...state, dogs: state.filteredSource.filter((d) => d.temperament && d.temperament.includes(action.payload))}
@@ -92,21 +97,45 @@ const rootReducer = (state = initialState, action) => {
         
         case RESET:
             return {
-                dogs: [],
-                allDogs: [],
-                temperaments: [],
+                ...state,
+                dogs: state.allDogs,
                 filteredSource: [],
                 dogDetail: {},
                 filteredTemp: [],
+                dogCreated: {},
                 filterByTemp: '',
                 filterBySource: '',
                 orderBy: '',
                 order: '',
                 showOrder: false,
+                currentPage: 1,
             }
 
         case ADD_DOG:
+            console.log(action.payload);
+            state.allDogs.push(action.payload)
+            if ( state.filterBySource === 'database') {
+                state.filteredSource.push(action.payload)
+                if (action.payload.temperament.includes(state.filterByTemp)) state.dogs.push(action.payload)
+            }
+            if(state.filterByTemp !== '' && action.payload.temperament.includes(state.filterByTemp)) {
+                state.filteredTemp.push(action.payload)
+                if(state.filterBySource === '') state.dogs.push(action.payload)
+            }
+            
             return {...state}
+
+        case CLEAR_DETAIL:
+            return {
+                ...state,
+                dogDetail: {}
+            }
+
+        case CHANGE_PAGE: 
+            return {
+                ...state,
+                currentPage: action.payload
+            }
     
         default:
             return {...state}

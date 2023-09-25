@@ -1,7 +1,7 @@
 import { getAdapter } from "axios"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getDogById } from "../redux/action-creators"
+import { clearDetail, getDogById } from "../redux/action-creators"
 import { useParams } from "react-router-dom"
 import '../styles/Detail.css'
 
@@ -13,6 +13,7 @@ function Detail() {
     const dispatch = useDispatch()
 
     useEffect(()=> {
+        dispatch(clearDetail())
         dispatch(getDogById(id))
     }, [dispatch])
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addDog, getAllDogs, getTemperaments } from "../redux/action-creators";
+import { addDog, getTemperaments } from "../redux/action-creators";
 import { validate, validateInputs, validateSubmit } from "../validations";
 import '../styles/CreateDog.css'
 
@@ -9,7 +9,6 @@ import '../styles/CreateDog.css'
 function CreateDog() {
 
     const temperaments = useSelector((state) => (state.temperaments).sort((a, b) => { return a.toLowerCase() > b.toLowerCase() ? 1 : -1 }))
-    const alldogs = useSelector((state) => state.allDogs)
     const dispatch = useDispatch()
     const [input, setInput] = useState({
         name: "",
@@ -24,16 +23,14 @@ function CreateDog() {
     })
     const [errors, setErrors] = useState({})
     const [newTemperament, setNewTemperament] = useState('')
+    const [success, setSuccess] = useState({})
 
     useEffect(() => {
-        dispatch(getAllDogs())
         dispatch(getTemperaments())
     }, [dispatch])
 
 
     const handleChange = (event) => {
-
-        console.log(alldogs);
         const { name, value } = event.target
         if (name === 'name') {
             const newValue = value.charAt(0).toUpperCase() + value.slice(1);
@@ -63,6 +60,7 @@ function CreateDog() {
 
     const handleNewTemperament = (evento) => {
         const { value } = evento.target
+        if (value === '') setErrors({...errors, temperament:''})
         const tempCap = value.charAt(0).toUpperCase() + value.slice(1);
         setNewTemperament(tempCap)
     }
@@ -88,10 +86,6 @@ function CreateDog() {
         if(Object.keys(inputerrors).length > 0) {
             return
         }
-        if ((alldogs.filter((d) => d.name === input.name)).length > 0) {
-            return setErrors({...errors, repeat: 'The dog you are trying to create already exists'})
-        }
-        return 
 
         const finalInput = {
             name: input.name,
@@ -101,22 +95,28 @@ function CreateDog() {
             image: input.image,
             temperament: input.temperament,
         }
-
-        dispatch(addDog(finalInput))
-        console.log('hola Submit');
-        console.log(finalInput);
-        setInput({
-            name: "",
-            minHeight: "",
-            maxHeight: "",
-            minWeight: "",
-            maxWeight: "",
-            minLife_span: "",
-            maxLife_span: "",
-            image: "",
-            temperament: [],
-        })
-        setNewTemperament('')
+        
+            dispatch(addDog(finalInput)).then((response)=> {
+                if (response.status === 400) {
+                    alert('The dog you are trying to create already exists')
+                } else {
+                    setInput({
+                        name: "",
+                        minHeight: "",
+                        maxHeight: "",
+                        minWeight: "",
+                        maxWeight: "",
+                        minLife_span: "",
+                        maxLife_span: "",
+                        image: "",
+                        temperament: [],
+                    })
+                    setNewTemperament('')
+                    setSuccess({ok: 'The dog was created succesfully'})
+                }
+            })
+            
+        
     }
 
 
@@ -266,6 +266,7 @@ function CreateDog() {
                     <div className="imgContainer">
                         { input.image && <img src={input.image} alt="dogPic" />}
                     </div>
+                    {success.ok && <h3 className="success">{success.ok}</h3>}
             </div>
         </div>
     )

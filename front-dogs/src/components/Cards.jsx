@@ -3,12 +3,14 @@ import Pagination from "./Pagination";
 import "../styles/Cards.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllDogs } from "../redux/action-creators";
+import { changePage, getAllDogs } from "../redux/action-creators";
 
 function Cards(){
 
     const sortedDogs = useSelector((state) => state.dogs);
-    const [currentPage, setCurrentPage] = useState(1);
+    const currentPage = useSelector((state) => state.currentPage)
+    const dispatch = useDispatch()
+    // const [currentPage, setCurrentPage] = useState(1);
     const dogsPerPage = 8;
 
 
@@ -19,14 +21,14 @@ function Cards(){
 
 
   useEffect(() => {
-    setCurrentPage(1)
+    // setCurrentPage(1)
     console.log('cambio allDogs');
     console.log(currentPage);
-  }, [sortedDogs]);
+  }, [sortedDogs, currentPage]);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  // const handlePageChange = (pageNumber) => {
+  //   dispatch(changePage(pageNumber))
+  // };
 
     return(
         <>
@@ -49,7 +51,7 @@ function Cards(){
     <Pagination
         currentPage={currentPage}
         totalPages={Math.ceil(sortedDogs.length / dogsPerPage)}
-        onPageChange={handlePageChange}
+        // onPageChange={handlePageChange}
       />
 
   </>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { filterSource, filterTemperaments, getTemperaments, orderName, orderWeight, reset } from "../redux/action-creators";
+import { filterSource, filterTemperaments, getAllDogs, getTemperaments, orderName, orderWeight, reset } from "../redux/action-creators";
 import { useDispatch, useSelector } from "react-redux";
 import '../styles/Filters.css'
 
@@ -61,6 +61,7 @@ function Filters() {
 
     const handleReset = () => {
         dispatch(reset())
+        dispatch(getAllDogs())
     }
 
 

@@ -1,27 +1,16 @@
 const { Dog, Temperament } = require("../db");
+const { createDog } = require("../controllers/createDog");
 
 
 const postDog = async (req, res) => {
     try {
         const { name, life_span, temperament, image, weight, height } = req.body;
-        console.log(temperament);
-        const dogCreated = await Dog.create({
-            name: name,
-            image: image,
-            height: height,
-            weight: weight,
-            life_span: life_span,
-        });
-
-        for (const temp of temperament) {
-            let [temperament, created] = await Temperament.findOrCreate({where: {
-                name: temp
-            }})
-            await dogCreated.addTemperament(temperament)
-        }
-        res.json('Dog created succesfully')
+        let createdDog = await createDog(name, life_span, temperament, image, weight, height)
+        res.status(200).json(createdDog)
     } catch (error) {
-        res.status(500).json('Error creating a dog')
+        if (error.name === "SequelizeUniqueConstraintError") {
+            res.status(400).json('The dog you are trying to create already exists')
+        } else res.status(500).json(error.message)
     }
 }
 

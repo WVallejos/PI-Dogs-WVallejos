@@ -3,7 +3,7 @@ const { Dog, Temperament } = require('../db')
 const fillDB = async () => {
     const perro1 =
         {
-            name: 'firulais',
+            name: 'Firulais',
             image: 'https://soyfotografodeperros.com/wp-content/uploads/2019/10/firulais.jpg',
             height: '23',
             weight: '324',
@@ -12,7 +12,7 @@ const fillDB = async () => {
         }
     const perro2 =
         {
-            name: 'ayudante de santa',
+            name: 'Ayudante de santa',
             image: 'https://w7.pngwing.com/pngs/18/711/png-transparent-santa-s-little-helper-santa-claus-snowball-marge-simpson-homer-simpson-santa-claus-thumbnail.png',
             height: '24323',
             weight: '3254',
@@ -21,9 +21,9 @@ const fillDB = async () => {
         }
     const dog1 = await Dog.create(perro1)
     const dog2 = await Dog.create(perro2)
-    const temp1 = await Temperament.create({name: 'loco'})
-    const temp2 = await Temperament.create({name: 'lindo'})
-    const temp3 = await Temperament.create({name: 'bueno'})
+    const temp1 = await Temperament.create({name: 'Loco'})
+    const temp2 = await Temperament.create({name: 'Lindo'})
+    const temp3 = await Temperament.create({name: 'Bueno'})
     dog1.addTemperament(temp1)
     dog1.addTemperament(temp2)
     dog2.addTemperament(temp3)
