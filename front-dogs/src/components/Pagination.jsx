@@ -19,13 +19,10 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
             <ul className='pagination'>
                 {currentPage > 1 && (
                     <li className='page-item' >
-                        <button onClick={() => handlePageChange(currentPage)}> &laquo; </button>
+                        <button onClick={() => handlePageChange(currentPage - 1)}> &laquo; </button>
                     </li>
                 )}
                 {pageNumbers.map((number) => (
-                    // <li key={number} className={`page-item ${number === currentPage ? 'active' : ''}`}>
-                    //     <button onClick={() => onPageChange(number)}>{number}</button>
-                    // </li>
                     <li key={number} className={`page-item ${number === currentPage ? 'active' : ''}`} >
                         <button onClick={() => handlePageChange(number)}>{number}</button>
                     </li>

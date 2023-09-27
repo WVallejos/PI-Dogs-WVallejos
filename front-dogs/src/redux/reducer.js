@@ -59,13 +59,14 @@ const rootReducer = (state = initialState, action) => {
         case FILTER_TEMP:
             state.filteredTemp = state.allDogs.filter((d) => d.temperament && d.temperament.includes(action.payload))
             if (state.filteredSource.length > 0) {
-                return { ...state, dogs: state.filteredSource.filter((d) => d.temperament && d.temperament.includes(action.payload)), filterByTemp: action.payload }
+                return { ...state, dogs: state.filteredSource.filter((d) => d.temperament && d.temperament.includes(action.payload)), currentPage: 1, filterByTemp: action.payload }
             } else {
                 return { ...state, dogs: [...state.filteredTemp], currentPage: 1, filterByTemp: action.payload }
             }
 
 
         case ORDER_NAME:
+            console.log(state);
             let orderNameFunction =
                 action.payload === 'ASC'
                     ? (a, b) => { return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1 } //ASC
@@ -74,6 +75,8 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 dogs: [...state.dogs.sort(orderNameFunction)],
                 allDogs: [...state.allDogs.sort(orderNameFunction)],
+                filteredTemp: [...state.filteredTemp?.sort(orderNameFunction)],
+                filteredSource: [...state.filteredSource?.sort(orderNameFunction)],
                 orderBy: 'name',
                 showOrder: true,
                 order: action.payload
@@ -87,6 +90,9 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 dogs: [...state.dogs.sort(orderWeightFunction)],
+                allDogs: [...state.allDogs.sort(orderWeightFunction)],
+                filteredTemp: [...state.filteredTemp?.sort(orderWeightFunction)],
+                filteredSource: [...state.filteredSource?.sort(orderWeightFunction)],
                 orderBy: 'weight',
                 showOrder: true,
                 order: action.payload

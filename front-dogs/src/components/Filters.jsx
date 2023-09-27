@@ -9,11 +9,11 @@ import '../styles/Filters.css'
 function Filters() {
 
     const temperaments = useSelector((state) => (state.temperaments).sort((a, b) => { return a.toLowerCase() > b.toLowerCase() ? 1 : -1 }));
-    const filterByTemp = useSelector((state) => (state.filterByTemp)) // global state to keep record of filter
-    const filterBySource = useSelector((state) => (state.filterBySource)) // global state to keep record of source filter
-    const orderType = useSelector((state) => state.order)
-    const orderBy = useSelector((state) => state.orderBy)
-    let showOrder = useSelector((state) => state.showOrder)
+    const filterByTemp = useSelector((state) => (state.filterByTemp)) // global state to keep record of what temp I use to filter (active, adaptable, etc)
+    const filterBySource = useSelector((state) => (state.filterBySource)) // global state to keep record of what source I use to filter (api, database)
+    const orderType = useSelector((state) => state.order) // global state (ASC,DESC)
+    const orderBy = useSelector((state) => state.orderBy) // global state (name, weight)
+    let showOrder = useSelector((state) => state.showOrder) // local state to show a dropdown or not
     const dispatch = useDispatch();
 
 
@@ -31,6 +31,7 @@ function Filters() {
     }
 
     const handleChangeOrder = (evento) => {
+        console.log(evento.target.value);
         if (evento.target.value === 'name') {
             dispatch(orderName('ASC'))
         }
