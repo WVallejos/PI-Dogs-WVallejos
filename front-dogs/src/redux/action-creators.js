@@ -26,7 +26,7 @@ export function getDogName(name) {
                 payload: data
             })
         } catch (error) {
-           alert(error.message)
+           alert(error.response.data)
         }
     }
 }
@@ -54,9 +54,7 @@ export function addDog(dog) {
                 payload: data
             })
         } catch (error) {
-            console.log(error);
-            return error.toJSON()
-            
+            if (error.response.status === 400) throw Error(error.response.data)     
         }
     }
 }
@@ -70,7 +68,7 @@ export function getDogById(id) {
                 payload: data
             })
         } catch (error) {
-            alert(error.message)
+            return error.response;
         }
     }
 }

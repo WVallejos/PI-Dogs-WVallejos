@@ -96,10 +96,7 @@ function CreateDog() {
             temperament: input.temperament,
         }
         
-            dispatch(addDog(finalInput)).then((response)=> {
-                if (response.status === 400) {
-                    alert('The dog you are trying to create already exists')
-                } else {
+            dispatch(addDog(finalInput)).then(()=> {
                     setInput({
                         name: "",
                         minHeight: "",
@@ -113,8 +110,7 @@ function CreateDog() {
                     })
                     setNewTemperament('')
                     setSuccess({ok: 'The dog was created succesfully'})
-                }
-            })
+            }).catch((error) => { alert(error.message)})
             
         
     }

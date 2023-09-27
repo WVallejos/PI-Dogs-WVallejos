@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDogs } from "../redux/action-creators";
 import Cards from "./Cards";
+import '../styles/Home.css'
 
 
 
@@ -11,10 +12,13 @@ import Cards from "./Cards";
 function Home() {
   const dispatch = useDispatch();
   const allDogs = useSelector((state) => state.allDogs);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
-    !allDogs.length&&dispatch(getAllDogs());
-    console.log('cambio dispatch');
+    if(!allDogs.length) {
+      setIsLoading(true)
+      dispatch(getAllDogs()).then(()=> {setIsLoading(false)});
+    }
   }, []);
 
   // useEffect(() => {
@@ -25,6 +29,7 @@ function Home() {
 
   return (
     <>
+    {isLoading&&<div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>}
     <Cards/>
     </>
   )

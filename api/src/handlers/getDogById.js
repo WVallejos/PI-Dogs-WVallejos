@@ -5,9 +5,11 @@ const getDogById = async (req, res) => {
         const {idRaza} = req.params;
         const allDogs = await getDogs()
         let dogsId = allDogs.filter((dog) => dog.id == idRaza)
-        res.status(200).json(dogsId[0])
+        console.log(dogsId.length);
+        if (dogsId.length != 0) res.status(200).json(dogsId[0])
+        else throw new Error('The dog is not found')
     } catch (error) {
-        res.status(500).json(error) 
+        res.status(404).json(error.message) 
     }
 }
 

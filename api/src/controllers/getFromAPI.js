@@ -10,7 +10,6 @@ const getFromAPI = async () => {
         const apiInfo = await formatDog(data)
         return apiInfo;
     } catch (error) {
-      console.log(error);
         throw new Error('Could not get any dog')        
     }
 }

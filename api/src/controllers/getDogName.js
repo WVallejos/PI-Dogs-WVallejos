@@ -13,12 +13,11 @@ const getDogName = async (name) => {
         } else {
             const dogsDb = await getFromDB()
             let dogsName = await dogsDb.filter((el) =>
-      el.name.toLowerCase().includes(name.toLowerCase())
-    );
-    return dogsName
+      el.name.toLowerCase() === name.toLowerCase());
+      if (dogsName.length != 0) return dogsName
+      else throw new Error(`We could not find any dog with name ${name} `)
         }
     } catch (error) {
-        console.log(error);
         throw error
     }
 }

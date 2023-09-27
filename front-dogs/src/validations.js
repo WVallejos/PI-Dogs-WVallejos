@@ -2,7 +2,7 @@ export function validate(input, errors) {
   errors = {...errors, height: '', weight: '', life_span: ''}
   const {name, value} = input
   const urlRegex = /^(https?:\/\/)?(www\.)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/;
-  const letterRegex = /^[A-Za-z]+$/
+  const letterRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/
   const numberRegex = /^[0-9]+$/
 
   switch (name) {
