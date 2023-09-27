@@ -38,6 +38,9 @@ function CreateDog() {
         } else {
             setInput({ ...input, [name]: value })
         }
+        console.log('min weight ' + input.minWeight);
+        console.log('max :' +input.maxWeight);
+        console.log('value ' + value);
         setErrors(validate(event.target, errors))
     }
 
