@@ -59,7 +59,7 @@ const rootReducer = (state = initialState, action) => {
         case FILTER_TEMP:
             state.filteredTemp = state.allDogs.filter((d) => d.temperament && d.temperament.includes(action.payload))
             if (state.filteredSource.length > 0) {
-                return { ...state, dogs: state.filteredSource.filter((d) => d.temperament && d.temperament.includes(action.payload)) }
+                return { ...state, dogs: state.filteredSource.filter((d) => d.temperament && d.temperament.includes(action.payload)), filterByTemp: action.payload }
             } else {
                 return { ...state, dogs: [...state.filteredTemp], currentPage: 1, filterByTemp: action.payload }
             }
@@ -115,7 +115,7 @@ const rootReducer = (state = initialState, action) => {
                 showOrder: false,
                 currentPage: 1,
             }
-            
+
 
         case ADD_DOG:
             state.allDogs.push(action.payload)

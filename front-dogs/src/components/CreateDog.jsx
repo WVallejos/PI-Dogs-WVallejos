@@ -262,10 +262,12 @@ function CreateDog() {
                         </form>
 
                 </div>
+                <div className="rightWrapper">
                     <div className="imgContainer">
                         { input.image && <img src={input.image} alt="dogPic" />}
                     </div>
-                    {success.ok && <h3 className="success">{success.ok}</h3>}
+                        {success.ok && <h3 className="success">{success.ok}</h3>}
+                </div>
             </div>
         </div>
     )

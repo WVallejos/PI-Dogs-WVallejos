@@ -5,18 +5,18 @@ const fillDB = async () => {
         {
             name: 'Firulais',
             image: 'https://soyfotografodeperros.com/wp-content/uploads/2019/10/firulais.jpg',
-            height: '23',
-            weight: '324',
-            life_span: '32'
+            height: '30 - 38',
+            weight: '40 - 50',
+            life_span: '10 - 12'
 
         }
     const perro2 =
         {
             name: 'Ayudante de santa',
             image: 'https://w7.pngwing.com/pngs/18/711/png-transparent-santa-s-little-helper-santa-claus-snowball-marge-simpson-homer-simpson-santa-claus-thumbnail.png',
-            height: '24323',
-            weight: '3254',
-            life_span: '372'
+            height: '33 - 40',
+            weight: '44 - 55',
+            life_span: '10 - 14'
 
         }
     const dog1 = await Dog.create(perro1)
