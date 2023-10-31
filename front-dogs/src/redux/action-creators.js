@@ -1,4 +1,4 @@
-import { ADD_DOG, CHANGE_PAGE, CLEAR_DETAIL, FILTER_SOURCE, FILTER_TEMP, GET_DOGS, GET_DOG_ID, GET_DOG_NAME, GET_TEMPERAMENTS, ORDER_NAME, ORDER_WEIGHT, RESET } from "./action-types";
+import { ADD_DOG, CHANGE_PAGE, CLEAR_DETAIL, FILTER_SORT, GET_DOGS, GET_DOG_ID, GET_DOG_NAME, GET_TEMPERAMENTS, RESET } from "./action-types";
 import axios from 'axios'
 
 const URL_BASE = 'http://localhost:3001'
@@ -73,33 +73,40 @@ export function getDogById(id) {
     }
 }
 
-export function filterTemperaments(temp) {
+export function filterAndSort(data) {
     return {
-        type: FILTER_TEMP,
-        payload: temp
+        type: FILTER_SORT,
+        payload: data
     }
 }
 
-export function filterSource(source) {
-    return {
-        type: FILTER_SOURCE,
-        payload: source
-    }
-}
+// export function filterTemperaments(temp) {
+//     return {
+//         type: FILTER_TEMP,
+//         payload: temp
+//     }
+// }
 
-export function orderName(order) {
-    return {
-        type: ORDER_NAME,
-        payload: order
-    }
-}
+// export function filterSource(source) {
+//     return {
+//         type: FILTER_SOURCE,
+//         payload: source
+//     }
+// }
 
-export function orderWeight(order) {
-    return {
-        type: ORDER_WEIGHT,
-        payload: order
-    }
-}
+// export function orderName(order) {
+//     return {
+//         type: ORDER_NAME,
+//         payload: order
+//     }
+// }
+
+// export function orderWeight(order) {
+//     return {
+//         type: ORDER_WEIGHT,
+//         payload: order
+//     }
+// }
 
 export function reset() {
     return {

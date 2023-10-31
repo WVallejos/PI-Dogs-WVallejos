@@ -1,7 +1,7 @@
 const { getFromAPI } = require('./getFromAPI')
 const { getFromDB } = require('./getFromDB')
 
-const getDogs = async () => {
+const getDogs = async (name) => {
     try {
         const apiDogs = await getFromAPI();
         const dbDogs = await getFromDB();
